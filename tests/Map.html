@@ -2142,30 +2142,6 @@
         map.destroy();
     }
 
-    function test_adjustZoom(t) {
-        t.plan(5);
-        var map = new OpenLayers.Map({
-            div: 'map',
-            layers: [
-                new OpenLayers.Layer('name', {
-                    isBaseLayer: true,
-                    wrapDateLine: true
-                })
-            ]
-        });
-        map.zoomToMaxExtent();
-        t.ok(map.getResolution() <= map.getMaxExtent().getWidth() / map.getSize().w, "wrapDateLine map not wider than world");
-        
-        t.eq(map.adjustZoom(9), 9, "valid zoom maintained");
-        t.eq(map.adjustZoom(1), 2, "zoom adjusted to not exceed world width");
-        
-        map.fractionalZoom = true;
-        t.eq(map.adjustZoom(1).toPrecision(3), "1.29", "zoom adjusted to match world width");
-
-        map.moveTo([16, 48], 0);
-        t.eq(map.getCenter().toShortString(), "0, 0", "no panning when moveTo is called with invalid zoom");
-    }
-
     function test_correctCenterAtZoomLevel0(t) {
         t.plan(1);
         var map = new OpenLayers.Map({
@@ -2184,24 +2160,6 @@
         map.moveTo(null, 0);
         var center  = map.getCenter();
         t.ok(center.equals(new OpenLayers.LonLat(-13.25, 56)), "Center is correct and not equal to maxExtent's center");
-    }
-    
-    function test_getZoomTargetCenter(t) {
-        t.plan(1);
-        var map = new OpenLayers.Map({
-            div: 'map',
-            layers: [
-                new OpenLayers.Layer('', {isBaseLayer: true})
-            ],
-            center: [0, 0],
-            zoom: 1
-        });
-        
-        var ll = map.getZoomTargetCenter({x: 44, y: 22}, map.getMaxResolution());
-
-        t.eq(ll.toShortString(), "180, -90", "getZoomTargetCenter works.");
-        
-        map.destroy();
     }
 
     function test_autoUpdateSize(t) {
