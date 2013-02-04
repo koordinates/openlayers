@@ -395,13 +395,11 @@
  */
 
     function test_Map_isValidZoomLevel(t) {
-        t.plan(5);
+        t.plan(4);
         var map = new OpenLayers.Map("map");
         map.addLayer(new OpenLayers.Layer(null, {
-            isBaseLayer: true, wrapDateLine: true, numZoomLevels: 19
-        }));
-        map.zoomToMaxExtent();
-        
+            isBaseLayer: true, numZoomLevels: 19
+        }))
         var valid;
 
         valid = OpenLayers.Map.prototype.isValidZoomLevel.apply(map, [-1]);
@@ -415,9 +413,6 @@
 
         valid = OpenLayers.Map.prototype.isValidZoomLevel.apply(map, [19]);
         t.eq(valid, false, "19 is not a valid zoomLevel");
-        
-        map.moveTo([16, 48], 0);
-        t.eq(map.getCenter().toShortString(), "0, 0", "no panning when moveTo is called with invalid zoom");
 
         map.destroy();
     }
